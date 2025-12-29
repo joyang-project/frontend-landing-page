@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  features: {
+    inlineStyles: true
+  },
+  css: [
+    '@/assets/css/main.css'
+  ],
   modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', '@nuxt/image'],
   shadcn: {
     /**
@@ -16,5 +22,15 @@ export default defineNuxtConfig({
      * @default "@/components/ui"
      */
     componentDir: '@/components/ui'
-  }
+  },
+    app: {
+    head: {
+      title: '조양냉난방시스템',
+      htmlAttrs: {
+        lang: 'ko',
+      },
+      charset: 'utf-16',
+      viewport: 'width=device-width, initial-scale=1',
+    },
+  },
 })

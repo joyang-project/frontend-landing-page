@@ -13,7 +13,7 @@ watch(currentMenu, () => {
 </script>
 
 <template>
-  <main class="mx-auto max-w-[1236px] px-4 md:px-12 py-6 md:py-10 min-h-[60vh]">
+  <main class="mx-auto max-w-[1236px] py-6 md:py-10 min-h-[60vh]">
     <Transition name="fade" mode="out-in">
       <div :key="currentMenu">
         <section v-if="currentMenu === 'intro'" class="animate-in fade-in slide-in-from-bottom-4 duration-500">
