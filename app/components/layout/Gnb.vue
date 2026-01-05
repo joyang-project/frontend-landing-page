@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Info, LayoutGrid, Phone } from 'lucide-vue-next'
+import { 
+  Phone,
+  Info,
+  LayoutGrid,
+  Image,
+  Coins
+} from 'lucide-vue-next'
 
 const currentMenu = useState<string>('currentMenu', () => 'intro')
 
 const navItems = [
   { id: 'intro', label: '소개', icon: Info },
   { id: 'types', label: '설치 유형', icon: LayoutGrid },
+  { id: 'example', label: '시공 사례', icon: Image },
+  { id: 'price', label: '가격', icon: Coins },
 ]
 </script>
 
@@ -34,7 +42,6 @@ const navItems = [
               v-for="item in navItems" 
               :key="item.id"
               :value="item.id"
-              :aria-label="`${item.label} 메뉴 보기`"
               class="px-8 text-[14px] font-semibold transition-all
                      data-[state=active]:text-[#155dfc] data-[state=active]:shadow-none"
             >
@@ -49,12 +56,7 @@ const navItems = [
           as-child
           class="hidden md:flex items-center justify-center gap-2.5 bg-[#FEE500] hover:bg-[#f2da00] text-[#3C1E1E] border-none font-bold rounded-full px-6 h-11 shadow-sm transition-all"
         >
-          <a 
-            href="https://pf.kakao.com/_xxxx"
-            target="_blank"
-            class="flex items-center leading-none"
-            aria-label="카카오톡 실시간 문의하기 (새창 열림)"
-          >
+          <a href="https://pf.kakao.com/_xxxx" target="_blank" class="flex items-center leading-none">
             <IconKakao class="h-5 w-5 translate-y-[0.5px]" />
             <span class="pt-[1px]">카카오로 실시간 문의하기</span>
           </a>
@@ -65,17 +67,12 @@ const navItems = [
           variant="outline"
           class="md:hidden border-[#155dfc] text-[#155dfc] hover:bg-[#155dfc] hover:text-white font-bold rounded-full h-10 px-4 active:scale-95 transition-all bg-transparent shadow-none border-2"
         >
-          <a
-            href="tel:010-3294-3286"
-            class="flex items-center gap-2 leading-none"
-            aria-label="전화 상담 연결하기: 010-3294-3286"
-          >
+          <a href="tel:010-3294-3286" class="flex items-center gap-2 leading-none">
             <Phone class="h-4 w-4 fill-current translate-y-[0.5px]" />
             <span class="pt-[1px]">빠른 전화 상담</span>
           </a>
         </Button>
       </div>
-
     </div>
   </nav>
 
@@ -83,14 +80,13 @@ const navItems = [
     class="fixed bottom-0 left-0 z-50 w-full border-t bg-background/95 backdrop-blur-lg md:hidden"
     aria-label="모바일 하단 메뉴"
   >
-    <div class="grid h-16 grid-cols-2 pb-safe">
+    <div class="grid h-16 grid-cols-4 pb-safe">
       <button 
         v-for="item in navItems"
         :key="item.id"
         @click="currentMenu = item.id"
         class="relative flex flex-col items-center justify-center gap-1 transition-colors"
         :class="currentMenu === item.id ? 'text-[#155dfc]' : 'text-muted-foreground'"
-        :aria-label="`${item.label} 메뉴 보기`"
         :aria-pressed="currentMenu === item.id"
       >
         <component 
@@ -98,13 +94,12 @@ const navItems = [
           class="h-5 w-5 transition-transform" 
           :class="{ 'scale-110': currentMenu === item.id }"
           :stroke-width="currentMenu === item.id ? 2.5 : 2" 
-          :color="currentMenu === item.id ? '#155dfc' : 'currentColor'"
         />
         <span class="text-[11px] font-medium">{{ item.label }}</span>
         
         <div 
           v-if="currentMenu === item.id" 
-          class="absolute bottom-1 h-1 w-8 rounded-full bg-[#155dfc]" 
+          class="absolute bottom-1 h-0.5 w-6 rounded-full bg-[#155dfc]" 
         />
       </button>
     </div>
