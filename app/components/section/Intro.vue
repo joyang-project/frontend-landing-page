@@ -48,41 +48,37 @@ const canScrollLeft = ref(false)
 const canScrollRight = ref(true)
 
 const cases = [
-  { id: 1, title: '이미지 1', category: '가정용', img: '🏠', color: 'bg-blue-50' },
-  { id: 2, title: '이미지 2', category: '업소용', img: '☕', color: 'bg-orange-50' },
-  { id: 3, title: '이미지 3', category: '업소용', img: '💻', color: 'bg-slate-50' },
-  { id: 4, title: '이미지 4', category: '가정용', img: '🏡', color: 'bg-green-50' },
-  { id: 5, title: '이미지 5', category: '업소용', img: '🍽️', color: 'bg-red-50' },
+  { id: 1, title: '테스트', category: '가정용', img: '/images/example/01.jpg' },
+  { id: 2, title: '테스트', category: '업소용', img: '/images/example/02.jpg' },
+  { id: 3, title: '테스트', category: '업소용', img: '/images/example/03.jpg' },
+  { id: 4, title: '테스트', category: '가정용', img: '/images/example/04.jpg' },
+  { id: 5, title: '테스트', category: '업소용', img: '/images/example/05.jpg' },
+  { id: 6, title: '테스트', category: '가정용', img: '/images/example/06.jpg' },
+  { id: 7, title: '테스트', category: '업소용', img: '/images/example/07.jpg' },
+  { id: 8, title: '테스트', category: '가정용', img: '/images/example/08.jpg' },
 ]
 
 const checkScroll = () => {
   if (!carouselRef.value) return
   const el = carouselRef.value
-  
   const isMobile = window.innerWidth < 768
   const cardWidth = isMobile ? window.innerWidth * 0.85 : 480
   const gap = isMobile ? 16 : 28
   const step = cardWidth + gap
-
   canScrollLeft.value = el.scrollLeft > 10
-
   const currentIndex = Math.floor((el.scrollLeft + 10) / step)
-  
   canScrollRight.value = currentIndex < cases.length - 1
 }
 
 const scroll = (direction: 'left' | 'right') => {
   if (!carouselRef.value) return
   const el = carouselRef.value
-  
   const isMobile = window.innerWidth < 768
   const cardWidth = isMobile ? window.innerWidth * 0.85 : 480
   const gap = isMobile ? 16 : 28
   const step = cardWidth + gap
-
   const currentIndex = Math.round(el.scrollLeft / step)
   const newIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1
-
   if (newIndex >= 0 && newIndex < cases.length) {
     el.scrollTo({
       left: newIndex * step,
@@ -114,23 +110,16 @@ const scroll = (direction: 'left' | 'right') => {
               더 쾌적한 환경을 직접 경험해 보세요.
             </p>
           </div>
-
           <div class="flex flex-col sm:flex-row gap-2.5 md:gap-4 relative z-20">
-            <button 
-              class="flex items-center justify-center gap-2 px-6 py-3.5 md:px-8 md:py-4 bg-[#155dfc] text-white rounded-xl md:rounded-2xl font-bold text-sm md:text-lg hover:bg-blue-600 transition-all shadow-lg active:scale-95 group"
-            >
+            <button class="flex items-center justify-center gap-2 px-6 py-3.5 md:px-8 md:py-4 bg-[#155dfc] text-white rounded-xl md:rounded-2xl font-bold text-sm md:text-lg hover:bg-blue-600 transition-all shadow-lg active:scale-95 group">
               지금 바로 무료 상담하기
             </button>
-            <button 
-              @click="currentMenu = 'types'" 
-              class="flex items-center justify-center gap-2 px-6 py-3.5 md:px-8 md:py-4 bg-white text-slate-600 border border-slate-200 rounded-xl md:rounded-2xl font-bold text-sm md:text-lg hover:bg-slate-50 transition-all active:scale-95 group"
-            >
+            <button @click="currentMenu = 'types'" class="flex items-center justify-center gap-2 px-6 py-3.5 md:px-8 md:py-4 bg-white text-slate-600 border border-slate-200 rounded-xl md:rounded-2xl font-bold text-sm md:text-lg hover:bg-slate-50 transition-all active:scale-95 group">
               설치 유형 보기 
               <ArrowRight class="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
-
       </section>
     </div>
 
@@ -159,24 +148,32 @@ const scroll = (direction: 'left' | 'right') => {
       </div>
 
       <div class="carousel-container relative">
-        <div 
-          ref="carouselRef"
-          @scroll="checkScroll"
-          class="carousel-track"
-        >
+        <div ref="carouselRef" @scroll="checkScroll" class="carousel-track">
           <div 
             v-for="item in cases" 
             :key="item.id"
-            class="carousel-item"
-            :class="item.color"
+            class="carousel-item group"
           >
-            <div class="absolute inset-0 flex items-center justify-center text-8xl md:text-9xl group-hover:scale-110 transition-transform duration-700">{{ item.img }}</div>
+            <div 
+              class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+              :style="{ backgroundImage: `url(${item.img})` }"
+            ></div>
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-90"></div>
+            
             <div class="absolute top-8 left-8 right-8 z-10 text-left">
-              <span class="inline-block px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-[#155dfc] text-xs font-bold uppercase tracking-widest mb-3 border border-white/20">{{ item.category }}</span>
-              <h3 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight tracking-tight">{{ item.title }}</h3>
+              <span class="inline-block px-4 py-1.5 rounded-full bg-[#155dfc] text-white text-xs font-bold uppercase tracking-widest mb-3 shadow-lg">
+                {{ item.category }}
+              </span>
+              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight tracking-tight drop-shadow-md">
+                {{ item.title }}
+              </h3>
             </div>
+            
             <div class="absolute bottom-8 right-8 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-              <div class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-slate-100"><ArrowUpRight class="w-6 h-6 text-[#155dfc]" /></div>
+              <div class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-slate-100">
+                <ArrowUpRight class="w-6 h-6 text-[#155dfc]" />
+              </div>
             </div>
           </div>
           <div class="virtual-spacer flex-shrink-0"></div>
@@ -213,6 +210,7 @@ const scroll = (direction: 'left' | 'right') => {
   scroll-snap-align: start;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  background-color: #f1f5f9; /* 이미지 로딩 전 배경색 */
 }
 
 .virtual-spacer {
@@ -236,6 +234,6 @@ const scroll = (direction: 'left' | 'right') => {
 
 .carousel-item:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
 }
 </style>
