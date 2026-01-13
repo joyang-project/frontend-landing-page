@@ -22,6 +22,10 @@ watch(currentMenu, () => {
         <section v-else-if="currentMenu === 'types'" class="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <SectionTypes />
         </section>
+
+        <section v-else-if="currentMenu === 'price'" class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <SectionPrice />
+        </section>
       </div>
     </Transition>
   </main>
