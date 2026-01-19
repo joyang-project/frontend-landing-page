@@ -25,7 +25,9 @@ onMounted(() => {
         src="/images/hero-bg.webp" 
         format="webp"
         quality="80"
-        sizes="sm:640px md:1024px lg:1920px"
+        sizes="sm:100vw md:100vw lg:1400px"
+        width="1920"
+        height="990"
         fetchpriority="high"
         preload
         alt="조양냉난방시스템 메인 배경"
