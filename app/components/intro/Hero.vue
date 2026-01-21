@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
+import { useIntersectionObserver } from '@vueuse/core'
 
-const currentMenu = useState<string>('currentMenu')
+const router = useRouter()
 const heroRef = ref<HTMLElement | null>(null)
 const heroVisible = ref(false)
 
-onMounted(() => {
-  const observer = new IntersectionObserver((entries) => {
+const { stop } = useIntersectionObserver(
+  heroRef,
+  (entries) => {
     const entry = entries[0]
-    if (entry && entry.isIntersecting) {
+    if (entry?.isIntersecting) {
       heroVisible.value = true
-      observer.unobserve(entry.target)
+      stop()
     }
-  }, { threshold: 0.1 })
-  
-  if (heroRef.value) observer.observe(heroRef.value)
-})
+  },
+  { threshold: 0.1 }
+)
+
+const goToTypes = () => {
+  router.push('/types')
+}
 </script>
 
 <template>
@@ -58,9 +63,11 @@ onMounted(() => {
             바로 무료 상담하기
           </a>
           
-          <button @click="currentMenu = 'types'" 
-                  aria-label="설치 가능한 시스템 에어컨 유형 보기"
-                  class="flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all group w-full md:w-auto">
+          <button 
+            @click="goToTypes" 
+            aria-label="설치 가능한 시스템 에어컨 유형 보기"
+            class="flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-2xl font-bold text-lg hover:bg-white/20 hover:-translate-y-1 transition-all group w-full md:w-auto cursor-pointer"
+          >
             설치 유형 보기 
             <ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
           </button>
