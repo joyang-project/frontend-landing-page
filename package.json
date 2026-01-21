@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@nuxt/image": "2.0.0",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/nuxt": "^14.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.562.0",

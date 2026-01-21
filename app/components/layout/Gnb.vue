@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { 
   Phone, Info, LayoutGrid, Coins, MessageCircle 
 } from 'lucide-vue-next'
 
-const currentMenu = useState<string>('currentMenu', () => 'intro')
+const route = useRoute()
+
+const currentMenu = computed(() => {
+  return (route.params.menu as string) || 'intro'
+})
 
 const navItems = [
-  { id: 'intro', label: '소개', icon: Info },
-  { id: 'types', label: '설치 유형', icon: LayoutGrid },
-  { id: 'price', label: '시공 가격', icon: Coins },
+  { id: 'intro', label: '소개', icon: Info, path: '/' },
+  { id: 'types', label: '설치 유형', icon: LayoutGrid, path: '/types' },
+  { id: 'price', label: '시공 가격', icon: Coins, path: '/price' },
 ]
 
 const isNavVisible = ref(true)
@@ -17,7 +21,6 @@ const lastScrollY = ref(0)
 
 const handleScroll = () => {
   if (typeof window === 'undefined') return
-
   const currentScrollY = window.scrollY
   
   if (currentScrollY <= 0) {
@@ -62,18 +65,17 @@ onUnmounted(() => {
         </NuxtLink>
 
         <div class="hidden lg:flex bg-muted/50 h-11 rounded-lg p-1 items-center">
-            <button
+            <NuxtLink
               v-for="item in navItems"
               :key="item.id"
-              @click="currentMenu = item.id"
-              class="px-8 h-full rounded-md text-[14px] font-semibold transition-all duration-200"
+              :to="item.path"
+              class="px-8 h-full flex items-center rounded-md text-[14px] font-semibold transition-all duration-200"
               :class="currentMenu === item.id 
                 ? 'bg-white text-[#155dfc] shadow-sm' 
                 : 'text-muted-foreground hover:text-foreground'"
-              :aria-pressed="currentMenu === item.id"
             >
               {{ item.label }}
-            </button>
+            </NuxtLink>
         </div>
       </div>
 
@@ -110,13 +112,12 @@ onUnmounted(() => {
     aria-label="모바일/태블릿 하단 메뉴"
   >
     <div class="grid h-16 grid-flow-col auto-cols-fr pb-safe w-full">
-      <button 
+      <NuxtLink 
         v-for="item in navItems"
         :key="item.id"
-        @click="currentMenu = item.id"
+        :to="item.path"
         class="relative flex flex-col items-center justify-center gap-1 transition-colors hover:bg-muted/50"
         :class="currentMenu === item.id ? 'text-[#155dfc]' : 'text-slate-600'" 
-        :aria-pressed="currentMenu === item.id"
       >
         <component 
           :is="item.icon" 
@@ -131,7 +132,7 @@ onUnmounted(() => {
           v-if="currentMenu === item.id" 
           class="absolute bottom-1 h-0.5 w-6 rounded-full bg-[#155dfc]" 
         />
-      </button>
+      </NuxtLink>
     </div>
   </nav>
 </template>

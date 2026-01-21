@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-vue-next'
 
 interface CaseItem {
@@ -17,6 +18,8 @@ const carouselRef = ref<HTMLElement | null>(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(true)
 const isMobile = ref(false)
+
+const timers = ref<ReturnType<typeof setTimeout>[]>([])
 
 const cases: CaseItem[] = [
   { id: 1, title: '', category: '가정용', img: '/images/example/01.jpg', desc: '' },
@@ -54,18 +57,20 @@ const scroll = (direction: 'left' | 'right') => {
 
 onMounted(async () => {
   updateSize()
-  window.addEventListener('resize', updateSize)
+  
+  useEventListener(window, 'resize', updateSize)
   
   await nextTick()
-  
   checkScroll()
-  setTimeout(checkScroll, 100)
-  setTimeout(checkScroll, 300)
-  setTimeout(checkScroll, 600)
+
+  const t1 = setTimeout(checkScroll, 100)
+  const t2 = setTimeout(checkScroll, 300)
+  const t3 = setTimeout(checkScroll, 600)
+  timers.value.push(t1, t2, t3)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateSize)
+  timers.value.forEach(t => clearTimeout(t))
 })
 
 const leftPadding = 'max(1.25rem, calc((100vw - 1236px) / 2 + 1.25rem))'
