@@ -10,6 +10,10 @@ export default defineNuxtConfig({
   image: {
     domains: ['jo-yang.com'],
     format: ['webp', 'avif', 'png'],
+    ipx: {
+      maxAge: 31536000
+    },
+    quality: 80,
   },
 
   features: {
@@ -63,6 +67,20 @@ export default defineNuxtConfig({
         },
         {
           rel: 'preload',
+          href: '/fonts/SUIT-Medium.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous'
+        },
+        {
+          rel: 'preload',
+          href: '/fonts/SUIT-Regular.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous'
+        },
+        {
+          rel: 'preload',
           as: 'image',
           href: '/images/hero-bg.webp',
           fetchpriority: 'high'
@@ -72,11 +90,16 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true
+    },
     routeRules: {
       '/images/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/logo.svg': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/fonts/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/_ipx/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
     }
   }
 })

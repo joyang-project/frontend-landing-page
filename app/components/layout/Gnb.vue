@@ -46,36 +46,38 @@ onUnmounted(() => {
 
 <template>
   <nav
-    class="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md antialiased tracking-tight transition-transform duration-300 ease-in-out"
+    class="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md antialiased tracking-tight transition-transform duration-300 ease-in-out"
     :class="isNavVisible ? 'translate-y-0' : '-translate-y-full'"
     aria-label="상단 글로벌 내비게이션 바"
   >
-    <div class="mx-auto max-w-[1236px] px-4 md:px-12 flex h-[60px] md:h-21 items-center justify-between">
-      <div class="flex items-center gap-6 md:gap-12">
-        <NuxtLink to="/" class="flex items-center gap-0.75 flex-shrink-0 transition-opacity hover:opacity-80">
+    <div class="mx-auto max-w-[1236px] px-4 md:px-12 flex h-[64px] md:h-[80px] items-center justify-between">
+      <div class="flex items-center gap-10 md:gap-16 h-full">
+        <NuxtLink to="/" class="flex items-center gap-1.5 flex-shrink-0 transition-opacity hover:opacity-80">
           <img
             src="/logo.svg"
             alt="조양냉난방시스템"
             width="150" height="40"
-            class="h-8 w-auto md:h-10"
+            class="h-9 w-auto md:h-11"
           />
-          <span class="font-black text-sm md:text-xl tracking-tighter text-slate-900">
+          <span class="font-black text-lg md:text-2xl tracking-tighter text-slate-900 hidden sm:block">
             냉난방시스템
           </span>
         </NuxtLink>
 
-        <div class="hidden lg:flex bg-muted/50 h-11 rounded-lg p-1 items-center">
-            <NuxtLink
-              v-for="item in navItems"
-              :key="item.id"
-              :to="item.path"
-              class="px-8 h-full flex items-center rounded-md text-[14px] font-semibold transition-all duration-200"
-              :class="currentMenu === item.id 
-                ? 'bg-white text-[#155dfc] shadow-sm' 
-                : 'text-muted-foreground hover:text-foreground'"
-            >
-              {{ item.label }}
-            </NuxtLink>
+        <div class="hidden lg:flex items-center gap-10 h-full">
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.id"
+            :to="item.path"
+            class="relative flex items-center h-full text-[16px] font-bold transition-all duration-200 group"
+            :class="currentMenu === item.id ? 'text-[#155dfc]' : 'text-slate-600 hover:text-slate-900'"
+          >
+            {{ item.label }}
+            <span 
+              class="absolute bottom-0 left-0 w-full h-[3px] bg-[#155dfc] transition-transform duration-300"
+              :class="currentMenu === item.id ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
+            ></span>
+          </NuxtLink>
         </div>
       </div>
 
@@ -88,7 +90,7 @@ onUnmounted(() => {
         >
           <a href="https://pf.kakao.com/_xxxx" target="_blank" rel="noopener noreferrer" class="flex items-center leading-none">
             <MessageCircle class="translate-y-[0.5px] w-4 h-4 lg:w-5 lg:h-5" aria-hidden="true" />
-            <span class="pt-[1px] ml-2">카카오로 실시간 문의하기</span>
+            <span class="pt-[1px] ml-2 text-nowrap">카카오로 실시간 문의하기</span>
           </a>
         </Button>
 
@@ -107,9 +109,9 @@ onUnmounted(() => {
   </nav>
 
   <nav
-    class="fixed bottom-0 left-0 z-50 w-full border-t bg-background/95 backdrop-blur-lg lg:hidden transition-transform duration-300 ease-in-out"
+    class="fixed bottom-0 left-0 z-50 w-full border-t bg-white/95 backdrop-blur-lg lg:hidden transition-transform duration-300 ease-in-out"
     :class="isNavVisible ? 'translate-y-0' : 'translate-y-full'"
-    aria-label="모바일/태블릿 하단 메뉴"
+    aria-label="모바일 하단 메뉴"
   >
     <div class="grid h-16 grid-flow-col auto-cols-fr pb-safe w-full">
       <NuxtLink 
