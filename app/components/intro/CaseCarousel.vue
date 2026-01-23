@@ -83,20 +83,22 @@ const desktopPadding = 'max(3rem, calc((100vw - 1236px) / 2 + 3rem))'
         <p class="text-slate-600 font-medium text-base md:text-lg tracking-tight">카드를 클릭하여 상세 이미지를 확인해보세요</p>
       </div>
 
-      <div class="hidden md:flex gap-3">
+      <div class="hidden md:flex gap-3" role="group" aria-label="캐러셀 컨트롤">
         <button 
           @click="scroll('left')" 
           :disabled="!canScrollLeft" 
           class="p-4 rounded-full border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-20 transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#155dfc]"
+          aria-label="이전 시공 사례 보기"
         >
-          <ChevronLeft class="w-6 h-6" />
+          <ChevronLeft class="w-6 h-6" aria-hidden="true" />
         </button>
         <button 
           @click="scroll('right')" 
           :disabled="!canScrollRight" 
           class="p-4 rounded-full border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-20 transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#155dfc]"
+          aria-label="다음 시공 사례 보기"
         >
-          <ChevronRight class="w-6 h-6" />
+          <ChevronRight class="w-6 h-6" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -107,6 +109,8 @@ const desktopPadding = 'max(3rem, calc((100vw - 1236px) / 2 + 3rem))'
         @scroll="checkScroll" 
         class="flex gap-4 md:gap-7 overflow-x-auto snap-x snap-mandatory scrollbar-hide pt-10 pb-10 overflow-visible"
         :style="{ paddingLeft: isMobile ? leftPadding : desktopPadding, scrollPaddingLeft: isMobile ? leftPadding : desktopPadding }"
+        role="region"
+        aria-roledescription="carousel"
       >
         <button 
           v-for="(item, index) in cases" 
@@ -114,10 +118,11 @@ const desktopPadding = 'max(3rem, calc((100vw - 1236px) / 2 + 3rem))'
           @click="emit('select-case', item)"
           type="button"
           class="flex-shrink-0 w-[78vw] md:w-[480px] aspect-[4/5] md:aspect-[3/4] rounded-[2.5rem] relative overflow-hidden snap-start cursor-pointer bg-slate-100 transition-all duration-500 hover:-translate-y-4 hover:shadow-[0_20px_50px_rgba(21,93,252,0.2)] hover:z-20 group text-left"
+          :aria-label="`${item.title} 시공 사례 상세 보기 (${item.service_type}, ${item.location_tag})`"
         >
           <NuxtImg 
             :src="getImageUrl(item.image_url)"
-            :alt="`${item.title} 설치 완료 현장`"
+            :alt="`${item.title} 설치 완료 현장 사진`"
             format="webp"
             quality="80"
             width="480"
@@ -126,8 +131,8 @@ const desktopPadding = 'max(3rem, calc((100vw - 1236px) / 2 + 3rem))'
             :loading="index <= 1 ? 'eager' : 'lazy'" 
           />
 
-          <div class="absolute inset-0 bg-black/40 transition-opacity duration-500 group-hover:opacity-10"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute inset-0 bg-black/40 transition-opacity duration-500 group-hover:opacity-10" aria-hidden="true"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" aria-hidden="true"></div>
 
           <div class="absolute top-8 left-8 right-8 z-10 transition-all duration-500 group-hover:opacity-0 group-hover:-translate-y-8">
             <span class="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest border border-white/20 mb-3">
@@ -139,7 +144,7 @@ const desktopPadding = 'max(3rem, calc((100vw - 1236px) / 2 + 3rem))'
             <p class="text-white/70 text-sm mt-2 font-medium">{{ item.location_tag }}</p>
           </div>
 
-          <div class="absolute bottom-8 right-8 w-14 h-14 rounded-full bg-[#155dfc] flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+          <div class="absolute bottom-8 right-8 w-14 h-14 rounded-full bg-[#155dfc] flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0" aria-hidden="true">
              <ArrowUpRight class="w-7 h-7" />
           </div>
         </button>
