@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-vue-next'
 
 interface CaseItem {
@@ -15,6 +16,7 @@ const emit = defineEmits<{
   (e: 'select-case', item: CaseItem): void
 }>()
 
+const route = useRoute()
 const config = useRuntimeConfig()
 const apiBase = config.public.apiBase
 const viewKey = ref(0)
@@ -29,9 +31,19 @@ const canScrollRight = ref(true)
 const isMobile = ref(false)
 const timers = ref<ReturnType<typeof setTimeout>[]>([])
 
+watch(() => route.path, () => {
+  if (import.meta.client) {
+    viewKey.value++
+    nextTick(() => {
+      checkScroll()
+    })
+  }
+})
+
 const getImageUrl = (url: string) => {
   if (!url) return ''
   if (url.startsWith('http')) return url
+  // 쿼리 스트링을 통해 브라우저 캐시 문제를 방지
   return `${apiBase}${url}?v=${viewKey.value}`
 }
 
@@ -137,7 +149,7 @@ const desktopPadding = 'max(3rem, calc((100vw - 1236px) / 2 + 3rem))'
           <img 
             :src="getImageUrl(item.image_url)"
             :alt="`${item.title} 설치 완료 현장 사진`"
-            loading="lazy"
+            loading="eager"
             decoding="async"
             class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
